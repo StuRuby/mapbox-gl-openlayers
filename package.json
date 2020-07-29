@@ -1,0 +1,29 @@
+{
+  "name": "mapbox-gl-openlayers",
+  "version": "1.0.0",
+  "description": "重投影openLayers切片图层，以customLayerInterface添加到mapbox-gl",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/StuRuby/mapbox-gl-openlayers.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/StuRuby/mapbox-gl-openlayers/issues"
+  },
+  "homepage": "https://github.com/StuRuby/mapbox-gl-openlayers#readme",
+  "dependencies": {
+    "mapbox-gl": "^1.11.1",
+    "ol": "^6.4.0"
+  },
+  "devDependencies": {
+    "@types/mapbox-gl": "^1.11.1",
+    "@types/ol": "^6.3.1",
+    "rollup": "^2.23.0"
+  }
+}
