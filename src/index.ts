@@ -1,27 +1,24 @@
 import { Map, CustomLayerInterface, MercatorCoordinate } from 'mapbox-gl';
-import OlMap from 'ol/Map';
-import OlView from 'ol/View';
-import WMTS from 'ol/source/WMTS';
-import XYZ from 'ol/source/XYZ';
-import TileLayer from 'ol/layer/Tile';
-import { transformExtent, transform } from 'ol/proj';
+import * as ol from 'ol';
+import * as _ from 'lodash';
 
-export class CustomTileLayer {
+
+export default class CustomTileLayer {
     width: number;
     height: number;
     tileOptions: TileOptions;
     id: string;
-    olMap: OlMap;
+    olMap: ol.Map;
     layer: CustomLayerInterface;
     map: Map;
-    constructor(options: Options) {
+    constructor(type: LayerType, options: Options) {
         const { id, width, height, tileOptions } = options;
         this.id = id;
         this.width = width;
         this.height = height;
         this.tileOptions = tileOptions;
 
-        this.olMap = this.createOlMap();
+        this.olMap = this.createOlMap(type);
         this.layer = this.createCustomWMTSLayer();
     }
 
@@ -30,9 +27,9 @@ export class CustomTileLayer {
         const width = this.width;
         const height = this.height;
         const container = document.createElement('div');
-        const map = new OlMap({
+        const map = new ol.Map({
             target: container,
-            view: new OlView({
+            view: new ol.View({
                 projection: 'EPSG:3857',
                 center: [0, 0],
                 zoom: 10,
@@ -41,22 +38,25 @@ export class CustomTileLayer {
         map.interactions.clear();
         map.controls.clear();
         map.setSize([width, height]);
-        window.removeEventListener('resize', this.olMap.handleResize_);
+        window.removeEventListener('resize', map.handleResize_);
         let source;
+        let tileGrid;
         switch (type) {
             case 'WMTS':
-                source = new WMTS(this.tileOptions);
+                tileGrid = new ol.tilegrid.WMTS(this.tileOptions.tileGrid);
+                source = new ol.source.WMTS(Object.assign(this.tileOptions, { tileGrid }));
                 break;
             case 'XYZ':
-                source = new XYZ(this.tileOptions);
+                tileGrid = new ol.tilegrid.WMTS(this.tileOptions.tileGrid);
+                source = new ol.source.XYZ(Object.assign(this.tileOptions, { tileGrid }));
                 break;
             default:
                 throw new Error('暂不支持此类型服务的添加，请选择WMTS或XYZ');
         }
-        const tileLayer = new TileLayer({
+        const tileLayer = new ol.layer.Tile({
             source
         });
-        tileLayer.on('postcompose', function () {
+        tileLayer.on('prerender', function () {
             self.map.triggerRepaint();
         });
         map.addLayer(tileLayer);
@@ -198,7 +198,7 @@ export class CustomTileLayer {
                 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
                 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
                 gl.uniform1i(this.texLocation, 0);
-                gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.UNSIGNED_BYTE, olMap.getTargetElement().getElementsByClassName('canvas')[0]);
+                gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, olMap.getTargetElement().getElementsByTagName('canvas')[0]);
 
                 gl.enable(gl.BLEND);
                 gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
@@ -212,12 +212,12 @@ export class CustomTileLayer {
         const olMap = this.olMap;
         const size = [this.width, this.height];
         const extent = olMap.getView().calculateExtent(size);
-        return transformExtent(extent, 'EPSG:3857', 'EPSG:4326');
+        return ol.proj.transformExtent(extent, 'EPSG:3857', 'EPSG:4326');
     }
 
     updatePosition() {
         const center = this.map.getCenter().toArray();
-        const centerIn3857 = transform(center, 'EPSG:4326', 'EPSG:3857');
+        const centerIn3857 = ol.proj.transform(center, 'EPSG:4326', 'EPSG:3857');
         this.olMap.getView().setCenter(centerIn3857);
         this.olMap.getView().setZoom(this.map.getZoom() + 1);
     }
@@ -243,7 +243,7 @@ interface Options {
     id: string;
     width: number;
     height: number;
-    tileOptions: any;
+    tileOptions: TileOptions;
 }
 
 interface CustomWMTSLayerInterface extends CustomLayerInterface {

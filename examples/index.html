@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>验证阿布扎比4326地图服务</title>
+    <link rel="stylesheet" type="text/css" href="./lib/ol.css">
+    <link rel="stylesheet" type="text/css" href="./lib/mapbox-gl.css">
+    <script type="text/javascript" src="./lib/ol.js"></script>
+    <script type="text/javascript" src="./lib/mapbox-gl.js"></script>
+    <script type="text/javascript" src="./lib/custom-tile-layer.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        html,
+        body,
+        #map,
+        #map-ol {
+            width: 100%;
+            height: 100%;
+        }
+
+        #map,
+        #map-ol {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+</body>
+
+</html>
+
+<script>
+    var map = new mapboxgl.Map({
+        container: 'map',
+        center: [50, 25],
+        zoom: 10,
+        style: {
+            "version": 8,
+            "name": "Positron",
+            "metadata": {},
+            "glyphs": "fonts/{fontstack}/{range}.pbf",
+            "sources": {},
+            "layers": [],
+            "transition": {
+                "duration": 0,
+                "delay": 0
+            }
+        }
+    });
+
+    var size = 0.011897305029151402;
+    var matrixIds = new Array(14);
+    for (var z = 0; z < 14; ++z) {
+        matrixIds[z] = z;
+    }
+    var resolutions = [0.011897305029151402, 0.005948652514575701, 0.0029743262572878505,
+        0.00118973050291514,
+        5.9486525145757E-4, 3.5691915087454206E-4, 1.7845957543727103E-4, 1.1897305029151401E-4,
+        5.9486525145757005E-5, 3.5691915087454204E-5, 1.903568804664224E-5, 9.51784402332112E-6,
+        4.75892201166056E-6,
+        2.37946100583028E-6
+    ];
+
+    const tileOptions = {
+        crossOrigin: 'anonymous',
+        projection: "EPSG:4326",
+        url: "https://arcgis.sdi.abudhabi.ae/arcgis/rest/services/Pub/BaseMapAra_DarkGray_GCS/MapServer/tile/{z}/{y}/{x}",
+        tileGrid: {
+            origin: [-400.0, 400.0],
+            resolutions,
+            matrixIds
+        }
+    };
+
+    map.on('load', function () {
+        const customTileLayer = new CustomTileLayer('XYZ', {
+            id: 'abuzhabi-custom-layer',
+            width: window.innerWidth,
+            height: window.innerWidth,
+            tileOptions
+        });
+
+        customTileLayer.addToMap(map);
+    })
+</script>
