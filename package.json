@@ -4,7 +4,9 @@
   "description": "重投影openLayers切片图层，以customLayerInterface添加到mapbox-gl",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-prod": "rollup --config ./build/build-prod.js",
+    "build-dev": "rollup --config ./build/build-dev.js"
   },
   "repository": {
     "type": "git",
@@ -22,8 +24,15 @@
     "ol": "^6.4.0"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^14.0.0",
     "@types/mapbox-gl": "^1.11.1",
     "@types/ol": "^6.3.1",
-    "rollup": "^2.23.0"
+    "rollup": "^2.23.0",
+    "rollup-plugin-json": "^4.0.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-terser": "^6.1.0",
+    "rollup-plugin-typescript": "^1.0.1",
+    "tslib": "^2.0.0",
+    "typescript": "^3.9.7"
   }
 }

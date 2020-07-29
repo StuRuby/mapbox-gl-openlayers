@@ -6,7 +6,7 @@ import XYZ from 'ol/source/XYZ';
 import TileLayer from 'ol/layer/Tile';
 import { transformExtent, transform } from 'ol/proj';
 
-export class CustomWMTSLayer {
+export class CustomTileLayer {
     width: number;
     height: number;
     tileOptions: TileOptions;
@@ -205,6 +205,7 @@ export class CustomWMTSLayer {
                 gl.drawArrays(gl.TRIANGLES, 0, 6);
             }
         }
+        return customWMTSLayer;
     }
 
     getImageExtent() {
