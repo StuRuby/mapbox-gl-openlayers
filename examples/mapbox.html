@@ -5,11 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>验证阿布扎比4326地图服务</title>
-    <link rel="stylesheet" type="text/css" href="./lib/ol.css">
     <link rel="stylesheet" type="text/css" href="./lib/mapbox-gl.css">
-    <script type="text/javascript" src="./lib/ol.js"></script>
-    <script type="text/javascript" src="./lib/mapbox-gl.js"></script>
-    <script type="text/javascript" src="./lib/custom-tile-layer.js"></script>
+    <script src="./lib/mapbox-gl-dev.js"></script>
     <style>
         * {
             margin: 0;
@@ -139,7 +136,7 @@
     }
 
     map.on('load', function () {
-        const customTileLayer = new CustomTileLayer(mapServiceConfig.type, {
+        const customTileLayer = new mapboxgl.CustomTileLayer(mapServiceConfig.type, {
             id: 'abuzhabi-custom-layer',
             width: window.innerWidth,
             height: window.innerWidth,

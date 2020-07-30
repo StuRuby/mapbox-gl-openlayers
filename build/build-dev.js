@@ -7,7 +7,7 @@ export default {
     input: 'src/index.ts',
     output: {
         file: 'dist/custom-tile-layer.js',
-        format: 'iife',
+        format: 'esm',
         name: 'CustomTileLayer'
     },
     plugins: [

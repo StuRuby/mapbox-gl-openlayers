@@ -1,6 +1,5 @@
 import { Map, CustomLayerInterface, MercatorCoordinate } from 'mapbox-gl';
 import * as ol from 'ol';
-import * as _ from 'lodash';
 
 
 export default class CustomTileLayer {
