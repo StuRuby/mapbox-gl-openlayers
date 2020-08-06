@@ -39,11 +39,48 @@
 
 <script>
     // 一、使用XYZ方式进行加载的配置文件
+    const mapServiceConfig = {
+        // 使用XYZ或者WMTS的方式进行加载
+        type: 'XYZ',
+        // 切片url地址
+        url: "http://32.90.18.104:9042/kmap-server/threeMap/shutu/vector_pc/_alllayers/",
+        // 切片原点
+        origin: [-400.0, 400.0],
+        // 切片投影坐标系: 'EPSG:4326' 或 'EPSG:3857',
+        projection: 'EPSG:4326',
+        // 切片分辨率,可以在服务中查看。
+        resolutions: [
+            0.0009765625,
+            0.00048828125,
+            0.000244140625,
+            0.0001220703125,
+            0.00006103515625,
+            0.000030517578125,
+            0.0000152587890625,
+            0.00000762939453125,
+            0.000003814697265625,
+            0.0000019073486328125
+        ],
+        matrixIds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+    };
+
+    // 二、使用WMTS方式进行加载的配置文件
+
     // const mapServiceConfig = {
     //     // 使用XYZ或者WMTS的方式进行加载
-    //     type: 'XYZ',
+    //     type: 'WMTS',
     //     // 切片url地址
-    //     url: "https://arcgis.sdi.abudhabi.ae/arcgis/rest/services/Pub/BaseMapAra_DarkGray_GCS/MapServer/tile/{z}/{y}/{x}",
+    //     url: 'https://arcgis.sdi.abudhabi.ae/arcgis/rest/services/Pub/BaseMapAra_DarkGray_GCS/MapServer/WMTS?',
+    //     // 接入图层名称
+    //     layer: 'Pub_BaseMapAra_DarkGray_GCS',
+    //     // 切片格式
+    //     format: 'image/jpeg',
+    //     // 一般不需要改
+    //     style: 'default',
+    //     // 一般不需要改
+    //     matrixSet: 'default028mm',
+    //     // 一般不需要改
+    //     wrapX: true,
     //     // 切片原点
     //     origin: [-400.0, 400.0],
     //     // 切片投影坐标系: 'EPSG:4326' 或 'EPSG:3857',
@@ -57,38 +94,7 @@
     //         2.37946100583028E-6
     //     ],
     //     matrixIds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
-    // };
-
-    // 二、使用WMTS方式进行加载的配置文件
-    const mapServiceConfig = {
-        // 使用XYZ或者WMTS的方式进行加载
-        type: 'WMTS',
-        // 切片url地址
-        url: 'https://arcgis.sdi.abudhabi.ae/arcgis/rest/services/Pub/BaseMapAra_DarkGray_GCS/MapServer/WMTS?',
-        // 接入图层名称
-        layer: 'Pub_BaseMapAra_DarkGray_GCS',
-        // 切片格式
-        format: 'image/jpeg',
-        // 一般不需要改
-        style: 'default',
-        // 一般不需要改
-        matrixSet: 'default028mm',
-        // 一般不需要改
-        wrapX: true,
-        // 切片原点
-        origin: [-400.0, 400.0],
-        // 切片投影坐标系: 'EPSG:4326' 或 'EPSG:3857',
-        projection: 'EPSG:4326',
-        // 切片分辨率,可以在服务中查看。
-        resolutions: [0.011897305029151402, 0.005948652514575701, 0.0029743262572878505,
-            0.00118973050291514,
-            5.9486525145757E-4, 3.5691915087454206E-4, 1.7845957543727103E-4, 1.1897305029151401E-4,
-            5.9486525145757005E-5, 3.5691915087454204E-5, 1.903568804664224E-5, 9.51784402332112E-6,
-            4.75892201166056E-6,
-            2.37946100583028E-6
-        ],
-        matrixIds: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
-    }
+    // }
 
     const map = new mapboxgl.Map({
         container: 'map',
