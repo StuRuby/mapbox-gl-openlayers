@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/StuRuby/mapbox-gl-openlayers#readme",
   "dependencies": {
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "mapbox-gl": "^1.11.1",
     "ol": "^6.4.0"
   },
